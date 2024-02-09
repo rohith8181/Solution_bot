@@ -4,6 +4,7 @@ const { handleMessage, handleURL, sendMessage } = require('./lib/Telegram');
 async function handler(req) {
     try {
         const { body } = req;
+        sendMessage(body.message,"🔃 Hold on, Sending your answer")
         if (body.message.entities) {
             if (body.message.entities[0].type === "url") {
                 const messageURL = body.message;
