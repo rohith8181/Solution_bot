@@ -37,6 +37,25 @@ async function sendDocument(messageURL, DocPath) {
         console.log("Internal Error in Sending Document function", err);
     }
 }
+async function sendPhoto(messageObj) {
+    try {
+        const imagepath = path.join(__dirname + "../../../Files/payment_qr.jpeg")
+        const ImageData = fs.readFileSync(imagepath);
+        const ImageBlob = new Blob([ImageData], { type: 'image/jpeg' });
+
+        const formData = new FormData();
+        formData.append('chat_id', messageObj.chat.id);
+        formData.append('photo', ImageBlob, 'QR.jpeg');
+
+        axios.post(`${BASE_URL}/sendPhoto`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+    } catch (err) {
+        console.log("Internal Error in Sending Document function", err);
+    }
+}
 async function handleMessage(messageObj) {
 
     try {
@@ -74,7 +93,8 @@ async function handleMessage(messageObj) {
                 case "help":
                     return sendMessage(messageObj, `Hello welcome to solutions_bot!, We Provide Solutions for <u>brainly</u> website questions.\n\n✅ PROCESS FOR GETTING ANSWERS FROM BOT.\n\nSTEP 1️⃣: Type the exact question on google.\n\nSTEP 2️⃣: Verify whether the question is same in brainly.in and it has been solved by an expert.\n\nSTEP 3️⃣: Now, copy the exact link and paste it on @${process.env.BOT_NAME}.\n\nSTEP 4️⃣: Please avoid sending additional texts just before the brainly link you send to bot. Just copy the link from browser and paste it in bot.\n\nSTEP 5️⃣: You will get the answer in your selected response format by default it will be text you can change that to 'htmlFile' by  using '/changeformat'\n\nNOTE :<u> htmlFile response usally takes little more time than text response.</u>\n\nThank you.\n\n✅ PROCESS FOR ADDING CREDITS TO YOUR ACCOUNT.\n\n- Type '/plan' for recharge plans and process for adding credits to your account.\n\n✅	AVAILABLE COMMANDS FOR INTERACTING TO BOT AND ITS USES.\n\n- /start (welcome message)\n- /account (gets your account Id)\n- /help (Information about how to use the bot)\n- /plan (recharge plans and process for adding credits)\n- /changeformat (changes the response format)\n- /checkformat (gets your current response format)\n- /balance (gets your current balance)\n`);
                 case "plan":
-                    return sendMessage(messageObj, `✅ RECHARGE PLANS FOR CREDITS POINTS In <u>Rupees</u>.\n\n 💰20  --> 15 points.\n 💰30  --> 20 points.\n 💰50  --> 40 points.\n 💰100 --> 75 points.\n\nPay to the upi id - peralarohith@fbl\n or use the Scanner below.\n\n✅<strong><u> IMPORTANT AFTER PAYMENT :</u></strong>\n\n- After making payment send the screenshot of the payment and your accountId (you can get this by typing '/account') to\n @Rohith_admin \n\n\nNote : Currently we are accepting maximum 100 rs per transaction. for more details contact Admin`);
+                    sendMessage(messageObj, `✅ RECHARGE PLANS FOR CREDITS POINTS In <u>Rupees</u>.\n\n 💰20  --> 15 points.\n 💰30  --> 20 points.\n 💰50  --> 40 points.\n 💰100 --> 75 points.\n\nPay to the upi id - peralarohith@fbl\n or use the Scanner below.\n\n✅<strong><u> IMPORTANT AFTER PAYMENT :</u></strong>\n\n- After making payment send the screenshot of the payment and your accountId (you can get this by typing '/account') to\n @Rohith_admin \n\n\nNote : Currently we are accepting maximum 100 rs per transaction. for more details contact Admin`);
+                    return sendPhoto(messageObj);
                 default:
                     return sendMessage(messageObj, "Don't know what you are talking about");
             }
@@ -149,4 +169,4 @@ async function handleURL(messageURL) {
 
 
 
-module.exports = { handleMessage, handleURL, sendMessage };
+module.exports = { handleMessage, handleURL, sendMessage, sendPhoto };
