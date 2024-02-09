@@ -7,17 +7,14 @@ const cors = require("cors");
 app.use(cors());
 app.use(express.json());
 require('./Controllers/db');
-app.use(require('./Controllers/paybalance'));
 require('dotenv').config();
-
 
 const { handler } = require('./Controllers/index');
 
-app.post("*", async (req, res) => {
-    res.send(await handler(req));
-})
 
-app.get("*", async (req, res) => {
+app.use(require('./Controllers/paybalance'));
+
+app.post("/", async (req, res) => {
     res.send(await handler(req));
 })
 

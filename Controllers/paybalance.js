@@ -10,7 +10,7 @@ router.post('/update/user/balance', async (req, res) => {
             const person = await User.findOne({ AccountId: account_id });
             if (person) {
                 const curr_credits = person.Credits;
-                let updated_credits = curr_credits + points;
+                let updated_credits = curr_credits + parseInt(points);
                 person.Credits = updated_credits;
                 await person.save();
                 res.json({ status: 200, message: "Balance Updated Succefully" });

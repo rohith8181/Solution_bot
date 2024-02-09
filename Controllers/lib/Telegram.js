@@ -91,12 +91,7 @@ async function handleMessage(messageObj) {
 async function handleURL(messageURL) {
     try {
         const person = await User.findOne({ AccountId: messageURL.from.id });
-        let curr_credits = person.Credits;
-        if (curr_credits > 0) {
-            person.Credits = curr_credits - 1;
-        } else {
-            return sendMessage(messageURL, "Your Current Balance is 0, Recharge from here '/plan'")
-        }
+
         await person.save();
         const response = await axios.get(messageURL.text, {
             method: 'GET',
@@ -110,6 +105,14 @@ async function handleURL(messageURL) {
                 protocol: 'http'
             }
         })
+        if (response.status === 403) {
+            return sendMessage(messageURL, "Sorry, Bot is Under Maintanace try again later")
+        } else if (response.status === 429) {
+            return sendMessage(messageURL, "The bot is experiencing high demand currently, Please try again after 1-2 min")
+        }
+        else if (response.status === 500) {
+            return sendMessage(messageURL, "Sorry the link is not responding please try again");
+        }
         const responseData = response.data || "";
         const $ = cheerio.load(responseData);
         const answerElement = $('.js-answer-content');
@@ -125,13 +128,19 @@ async function handleURL(messageURL) {
             }
             else {
                 const answer = $('.js-react-answers').html();
-                const filepath = path.join(__dirname + `../../../data/${messageURL.chat.id}.html`);
+                const filepath = path.join(__dirname + `../../../Files/${messageURL.chat.id}.html`);
                 fs.writeFileSync(filepath, answer, 'utf-8');
                 sendDocument(messageURL, filepath);
             }
         }
         else {
             sendMessage(messageURL, "Sorry, This Question is not Yet Answered");
+        }
+        let curr_credits = person.Credits;
+        if (curr_credits > 0) {
+            person.Credits = curr_credits - 1;
+        } else {
+            return sendMessage(messageURL, "Your Current Balance is 0, Recharge from here '/plan'")
         }
     } catch (err) {
         console.log("Error in internal Server", err);
