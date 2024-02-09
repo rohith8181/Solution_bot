@@ -91,8 +91,6 @@ async function handleMessage(messageObj) {
 async function handleURL(messageURL) {
     try {
         const person = await User.findOne({ AccountId: messageURL.from.id });
-
-        await person.save();
         const response = await axios.get(messageURL.text, {
             method: 'GET',
             proxy: {
@@ -142,6 +140,7 @@ async function handleURL(messageURL) {
         } else {
             return sendMessage(messageURL, "Your Current Balance is 0, Recharge from here '/plan'")
         }
+        await person.save();
     } catch (err) {
         console.log("Error in internal Server", err);
     }
