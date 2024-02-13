@@ -133,6 +133,8 @@ async function handleURL(messageURL) {
         }
         else if (response.status === 500) {
             return sendMessage(messageURL, "Sorry the link is not responding please try again");
+        } else if (response.status === 400) {
+            return sendMessage(messageURL, "Check your Url and try again...")
         }
         const responseData = response.data || "";
         const $ = cheerio.load(responseData);
