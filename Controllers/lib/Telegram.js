@@ -46,7 +46,7 @@ async function sendPhoto(messageObj) {
         formData.append('chat_id', messageObj.chat.id);
         formData.append('photo', ImageBlob, 'QR.jpeg');
 
-        axios.post(`${BASE_URL}/sendPhoto`, formData, {
+        await axios.post(`${BASE_URL}/sendPhoto`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
