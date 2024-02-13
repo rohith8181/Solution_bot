@@ -23,7 +23,7 @@ async function handler(req) {
         return;
 
     } catch (err) {
-        console.log("Found Error in handler function", err.message);
+        console.log("Found Error in handler function", err);
     }
 }
 

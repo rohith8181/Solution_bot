@@ -15,7 +15,7 @@ async function sendMessage(messageObj, messageText) {
         })
     }
     catch (err) {
-        console.log("Found Error in sendMessage Function", err.response.data);
+        console.log("Found Error in sendMessage Function", err);
     }
 }
 async function sendDocument(messageURL, DocPath) {
@@ -165,7 +165,7 @@ async function handleURL(messageURL) {
         }
         await person.save();
     } catch (err) {
-        console.log("Error in internal Server", err.response.data);
+        console.log("Error in internal Server", err);
     }
 }
 
