@@ -22,7 +22,7 @@ router.post('/update/user/balance', async (req, res) => {
         }
     } catch (err) {
         console.log("Error in updating balace", err);
-        res.json({ status: 500, message: "Internal Error" });
+        res.json({ status: 500, message: "Internal Error in paybalance file" });
     }
 })
 

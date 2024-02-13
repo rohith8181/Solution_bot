@@ -52,7 +52,7 @@ async function sendPhoto(messageObj) {
             },
         })
     } catch (err) {
-        console.log("Internal Error in Sending Document function", err);
+        console.log("Internal Error in Sending Photo function", err);
     }
 }
 async function handleMessage(messageObj) {
@@ -165,7 +165,7 @@ async function handleURL(messageURL) {
         }
         await person.save();
     } catch (err) {
-        console.log("Error in internal Server", err);
+        console.log("Found Error in handleUrl function", err);
     }
 }
 
