@@ -9,7 +9,7 @@ async function handler(req) {
                 const messageURL = body.message;
                 sendMessage(messageURL, "🔃 Hold on, Sending your answer")
                 const link = messageURL.text;
-                if (link.includes("https://brainly.in/")) {
+                if (link.includes("https://brainly")) {
                     return await handleURL(messageURL);
                 } else {
                     return sendMessage(messageURL, "Sorry brainly questions are only accepted")
